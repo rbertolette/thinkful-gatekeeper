@@ -65,15 +65,21 @@ const USERS = [
 //     (aka, `req.user = matchedUser`)
 const gateKeeper = (req, res, next) => {
   
-  const userInfo = queryString.parse(req.get('x-username-and-passwordx'));
-  if (!(userInfo.pass && userInfo.user)){
-    console.log('No user info is found.'); 
-
-  } else {
-    console.log(userInfo);
-    req.user = userInfo;
-    
-  }  
+  const userInfo = queryString.parse(req.get('x-username-and-password'));
+  if (userInfo.pass && userInfo.user){
+    // console.log('No user info is found.'); 
+    // console.log(USERS);
+    // const userCount = USERS.length;
+    // let i = 0;
+    // console.log(USERS[i]);
+    USERS.forEach(function(user) {
+      console.log(user);
+      if (user.userName == userInfo.user && user.password == userInfo.pass) {
+        req.user = user;
+        // break;
+      }
+    });
+  }
   next();
 
 }
