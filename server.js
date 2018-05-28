@@ -66,22 +66,18 @@ const USERS = [
 const gateKeeper = (req, res, next) => {
   
   const userInfo = queryString.parse(req.get('x-username-and-password'));
+  // This does both 1 & 2 above
   if (userInfo.pass && userInfo.user){
-    // console.log('No user info is found.'); 
-    // console.log(USERS);
-    // const userCount = USERS.length;
-    // let i = 0;
-    // console.log(USERS[i]);
-    USERS.forEach(function(user) {
-      console.log(user);
-      if (user.userName == userInfo.user && user.password == userInfo.pass) {
+    // This does 3 & 4 above
+    USERS.forEach(user => {
+      // NOTE: you can't use a break function on foreach. 
+      // Use !req.user to ignore all other USERS after one is found.
+      if (!req.user && user.userName == userInfo.user && user.password == userInfo.pass) {
         req.user = user;
-        // break;
       }
     });
   }
   next();
-
 }
 
 // Add the middleware to your app!
